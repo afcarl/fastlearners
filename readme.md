@@ -15,12 +15,12 @@ This software is placed under the [OpenScience license](http://fabien.benureau.c
 1. Get the code
 1. `python setup.py install`
 
-### (Optional) C++ speed-up
+#### (Optional) C++ speed-up
 1. Install [cython](cython.org) and [eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page).
 1. Go to `cdataset/`
 1. `python setup.py install`
 
-### (Optional) Tests
+#### (Optional) Tests
 1. To run the tests and examples, you will need to install [robots](github.com/humm/robots)
 
 ## Usage
