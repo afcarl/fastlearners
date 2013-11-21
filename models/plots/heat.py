@@ -79,7 +79,7 @@ class HeatMap(object):
                 for j in range(-4, 5):
                     neighborhood.append((int(center[0])+i, int(center[1])+j))
             for ng in neighborhood:
-                d = toolbox.norm(ng, center)
+                d = toolbox.dist(ng, center)
                 w = math.exp(-d*d/4)
                 try:
                     heatmap[-ng[1]][ng[0]]   += w*c

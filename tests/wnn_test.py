@@ -91,9 +91,9 @@ def test_fwdwnn_kpoints_group():
             x = np.random.rand(n)
             yp = model.predict_y(x)
 
-            check = min([toolbox.norm(yp, y) for y in ygroup]) < 1e-10
+            check = min([toolbox.dist(yp, y) for y in ygroup]) < 1e-10
             if not check:
-                print('Error:', n, m, k, min([toolbox.norm(yp, y) for y in ygroup]), yp)
+                print('Error:', n, m, k, min([toolbox.dist(yp, y) for y in ygroup]), yp)
             result = result and check
 
     return result
@@ -177,7 +177,7 @@ def test_invwnn_kpoints_group():
         for i in range(10):
             y   = np.random.rand(m)
             xp = model.infer_x(y)[0]
-            check = min([toolbox.norm(xp, x) for x in xgroup]) < 1e-10
+            check = min([toolbox.dist(xp, x) for x in xgroup]) < 1e-10
             if not check:
                 print('Error:', n, m, y, xe, xp)
             result = result and check

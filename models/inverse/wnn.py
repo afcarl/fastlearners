@@ -52,7 +52,7 @@ class WeightedNNInverseModel(inverse.InverseModel):
 
     def _weights(self, index, dists, sigma_sq, y_desired):
 
-        dists = [toolbox.norm(self.fmodel.dataset.get_y(idx), y_desired)
+        dists = [toolbox.dist(self.fmodel.dataset.get_y(idx), y_desired)
                  for idx in index] # could be optimized
 
         w = np.fromiter((toolbox.gaussian_kernel(d/self.fmodel.dim_y, sigma_sq)

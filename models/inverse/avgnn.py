@@ -60,7 +60,7 @@ class AverageNNInverseModel(inverse.InverseModel):
         for i in indexes:
             xi = self.fmodel.dataset.get_x(i)
             dists_xi, indexes_xi = self.fmodel.dataset.nn_x(xi, k = k)
-            std_xi = np.std([toolbox.norm(self.fmodel.dataset.get_y(j), y_desired) for j in indexes_xi])
+            std_xi = np.std([toolbox.dist(self.fmodel.dataset.get_y(j), y_desired) for j in indexes_xi])
             if std_xi < min_std:
                 min_std, min_xi = std_xi, xi
         return [min_xi]
