@@ -1,13 +1,13 @@
 
 from ..dataset import Dataset
-from .forward import ForwardModel 
+from .forward import ForwardModel
 
 class NNForwardModel(ForwardModel):
     """Nearest Neighbors Forward Model"""
-    
+
     name = 'NN'
     desc = 'Nearest Neighbors'
-    
+
     def predict_y(self, xq, **kwargs):
         """Provide an prediction of xq in the output space
 
@@ -16,4 +16,4 @@ class NNForwardModel(ForwardModel):
         """
         dists, indexes = self.dataset.nn_x(xq, k = 1)
         return self.dataset.get_y(indexes[0])
-        
+

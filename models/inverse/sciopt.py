@@ -106,6 +106,11 @@ class BFGSInverseModel(ScipyInverseModel):
                        'disp'    : disp,
                       }
 
+    def _guess_x(self, y_desired, **kwargs):
+        dists, indexes = self.fmodel.dataset.nn_y(y_desired, k=1)
+        return [self.fmodel.dataset.get_x(indexes[0])]
+
+
 class COBYLAInverseModel(ScipyInverseModel):
     """Class that takes specialized COBYLA options"""
 

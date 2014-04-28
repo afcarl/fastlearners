@@ -27,5 +27,8 @@ class NNInverseModel(inverse.InverseModel):
         @param y  the desired output for infered x.
         """
         assert len(y) == self.fmodel.dim_y, "Wrong dimension for y. Expected %i, got %i" % (self.fmodel.dim_y, len(y))
-        dists, index = self.fmodel.dataset.nn_y(y, k = 1)
-        return [self.fmodel.dataset.get_x(index[0])]
+        if len(self.fmodel.dataset) == 0:
+            return [[0.0]*self.dim_y]
+        else:
+            dists, index = self.fmodel.dataset.nn_y(y, k = 1)
+            return [self.fmodel.dataset.get_x(index[0])]

@@ -78,6 +78,7 @@ void _cLwlr::_weights(int k, double sigma_sq, vector<double>& dists) {
             sigma_sq += di*di;
         }
         sigma_sq /= k;
+        sigma_sq /= 2;
     }
 
     if (k > int(this->_w.size())) {
@@ -111,5 +112,5 @@ void _cLwlr::_weights(int k, double sigma_sq, vector<double>& dists) {
 //const double counterbalance = 10.0e30;
 
 double _cLwlr::_gauss(double a, double sigma_sq) {
-    return exp(-sqrt(a)/(sigma_sq));
+    return exp(-a*a/(2*sigma_sq));
 }

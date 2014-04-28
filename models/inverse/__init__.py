@@ -4,3 +4,4 @@ from .sciopt   import BFGSInverseModel, COBYLAInverseModel
 from .nn       import NNInverseModel
 from .wnn      import WeightedNNInverseModel, ESWNNInverseModel
 from .cmamodel import CMAESInverseModel
+from .nnlwr    import NNLWRInverseModel

@@ -5,7 +5,7 @@ import models.learner
 # Creating a 6DOF robotic arm
 arm6DOF = robots.KinematicArm2D(dim=6)
 # Creating a learner, regrouping a forward and inverse model
-learner = models.learner.Learner.from_robot(arm6DOF, fwd = 'LWLR', inv = 'L-BFGS-B')
+learner = models.learner.Learner.from_robot(arm6DOF, fwd = 'WNN', inv = 'L-BFGS-B')
 
 # Training the learner on 1000 examples
 for i in range(1000):
@@ -17,5 +17,7 @@ for i in range(1000):
 print learner.predict_effect((14.0, 20.0, -35.0, 61.0, -11.0, 79.0))
 
 # Infering orders.
-print learner.infer_order((30.0, -10.0))
+x = learner.infer_order((1.5, 5.8))
+y = arm6DOF.execute_order(x)
+print y
 

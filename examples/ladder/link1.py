@@ -2,13 +2,13 @@
 import random
 random.seed(0)
 
-import treedict
+import forest
 import robots
 from models.learner import Learner, fwdclass
 from models.plots.ercurve import ErrorCurve
 
 # Robot
-cfg = treedict.TreeDict()
+cfg = forest.Tree()
 cfg.dim     = 6
 cfg.lengths = 1.0
 cfg.limits  = (-360.0, 360.0)

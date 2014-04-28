@@ -290,7 +290,6 @@ class ScaledDataset(Dataset):
             self.nn_ready[side] = True
 
 
-
 try:
     from cdataset import cDataset
     pDataset = Dataset # keeping the python version accessible

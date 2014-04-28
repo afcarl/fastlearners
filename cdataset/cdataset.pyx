@@ -45,6 +45,10 @@ cdef class cDataset:
         pass
         #del self.thisptr
 
+    def __len__(self):
+        return self.thisptr.size
+
+
     def reset(self):
         self.thisptr.reset()
 

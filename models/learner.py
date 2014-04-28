@@ -27,7 +27,8 @@ invclass = {'NN'       : inverse.NNInverseModel,
             'L-BFGS-B' : inverse.BFGSInverseModel,
             'COBYLA'   : inverse.COBYLAInverseModel,
             'CMAES'    : inverse.CMAESInverseModel,
-            'Rnd'      : inverse.RandomInverseModel
+            'Rnd'      : inverse.RandomInverseModel,
+            'NNLWR'    : inverse.NNLWRInverseModel
            }
 
 class Learner(object):

@@ -60,6 +60,8 @@ def test_lwr_linear():
             yp = model.predict_y(x)
             #print 'y ', y
             #print 'yp', yp
+            if not np.allclose(y, yp, rtol = 1e-10, atol = 1e-10):
+                print(n, m)
             result = result and np.allclose(y, yp, rtol = 1e-10, atol = 1e-10)
 
     return result

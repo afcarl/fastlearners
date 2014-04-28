@@ -58,6 +58,12 @@ import toolbox
 from ..dataset import Dataset
 from .forward import ForwardModel
 
+def gaussian_kernel(d, sigma_sq):
+    """Compute the guassian kernel function of a given distance
+    @param d         the euclidean distance
+    @param sigma_sq  sigma of the guassian, squared.
+    """
+    return math.exp(-(d*d)/(2*sigma_sq))
 
 class LWLRForwardModel(ForwardModel):
     """Locally Weighted Linear Regression Forward Model"""
@@ -73,7 +79,7 @@ class LWLRForwardModel(ForwardModel):
         @param sigma    sigma for the guassian distance.
         @param nn       the number of nearest neighbors to consider for regression.
         """
-        self.k        = k or 2*dim_x+1
+        self.k        = k or max(3, int(1.1*dim_x+1)) #
         ForwardModel.__init__(self, dim_x, dim_y, sigma = sigma, k = self.k, **kwargs)
         self.sigma_sq = sigma*sigma
 
@@ -102,11 +108,19 @@ class LWLRForwardModel(ForwardModel):
         k = k or self.k
 
         dists, index = self.dataset.nn_x(xq, k = k)
+        #print(list(index))
+
         w = self._weights(dists, sigma_sq)
 
         Xq  = np.array(np.append([1.0], xq), ndmin = 2)
         X   = np.array([self.dataset.get_x_padded(i) for i in index])
         Y    = np.array([self.dataset.get_y(i) for i in index])
+
+        from toolbox import gfx
+        samples = [(d_i, w_i, tuple(self.dataset.get_x(i)), tuple(self.dataset.get_y(i))) for d_i, i, w_i in zip(dists, index, w)]
+        # for d_i, w_i, x_i, y_i in sorted(samples):
+        #     print('{}{:7.5f}/{:7.5f}:  {} -> {}{}'.format(gfx.cyan, d_i, w_i, gfx.ppv(x_i, fmt=' 5.2f'), gfx.ppv(y_i, fmt=' 5.2f'), gfx.end))
+        # print('')
 
         W   = np.diag(w)
         WX  = np.dot(W, X)
@@ -120,8 +134,9 @@ class LWLRForwardModel(ForwardModel):
         return Yq.ravel()
 
     def _weights(self, dists, sigma_sq):
+        #print('sigma: {}'.format(sigma_sq))
 
-        w = np.fromiter((toolbox.gaussian_kernel(d/self.dim_x, sigma_sq)
+        w = np.fromiter((gaussian_kernel(d, sigma_sq)
                          for d in dists), np.float, len(dists))
 
         wsum = w.sum()
@@ -131,13 +146,14 @@ class LWLRForwardModel(ForwardModel):
             eps = wsum * 1e-10 / self.dim_x
             return np.fromiter((w_i/wsum if w_i > eps else 0.0 for w_i in w), np.float)
 
+
 class ESLWLRForwardModel(LWLRForwardModel):
     """ES-LWLR : LWLR with estimated sigma, on a query basis, as the mean distance."""
 
     name = 'ES-LWLR'
 
     def _weights(self, dists, sigma_sq):
-        sigma_sq=(dists**2).sum()/len(dists)
+        sigma_sq=(dists**2).sum()/len(dists)/2
         return LWLRForwardModel._weights(self, dists, sigma_sq)
 
 pLWLRForwardModel = None

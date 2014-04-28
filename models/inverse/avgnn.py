@@ -1,8 +1,8 @@
 """Average of Nearest Neighbors inverse model.
 In such a model, the crucial part is choosing the good neighborhood.
 
-Notes : There should be no particular reason why the NN forward model's k 
-        should be the same as the NN inverse model's k, but it's not such 
+Notes : There should be no particular reason why the NN forward model's k
+        should be the same as the NN inverse model's k, but it's not such
         a bad heuristic. Could probably be improved.
 """
 
@@ -26,6 +26,8 @@ class AverageNNInverseModel(inverse.InverseModel):
         @param k  the number of neighbors to consider for averaging
         """
         inverse.InverseModel.__init__(self, dim_x, dim_y, **kwargs)
+        self.dim_x = dim_x
+        self.dim_y = dim_y
         self.fmodel = models.forward.avgnn.AverageNNForwardModel(dim_x, dim_y, k = k, **kwargs)
         self.k      = k or 3*dim_y
 
@@ -34,25 +36,27 @@ class AverageNNInverseModel(inverse.InverseModel):
 
         @param y  the desired output for infered x.
         @param k  how many neighbors to consider for the average
-                  this value override the class provided one on a per 
+                  this value override the class provided one on a per
                   method call basis.
         """
         assert len(y) == self.fmodel.dim_y, "Wrong dimension for y. Expected %i, got %i" % (self.fmodel.dim_y, len(y))
         k = k or self.k
-        
+
+        if len(self.fmodel.dataset) == 0:
+            return [[random.random() for _ in range(self.dim_y)]]
         x_guess = self._guess_x(y, k = k)[0]
         dists, index = self.fmodel.dataset.nn_x(x_guess, k = k)
         return [np.average([self.fmodel.dataset.get_x(idx) for idx in index], axis = 0)]
-        
+
     def _guess_x(self, y_desired, **kwargs):
         """Choose the relevant neighborhood on which to average, based on the minimum
-        spread of the corresponding neighborhood in S. 
-        for each (x, y) with y neighbor of y_desired, 
-            1. find the neighborhood of x, (xi, yi)_k. 
-            2. compute the standart deviation of the error between yi and y_desired. 
+        spread of the corresponding neighborhood in S.
+        for each (x, y) with y neighbor of y_desired,
+            1. find the neighborhood of x, (xi, yi)_k.
+            2. compute the standart deviation of the error between yi and y_desired.
             3. select the neighborhood of minimum standart deviation
-            
-        TODO : Implement another method taking the spread in M too. 
+
+        TODO : Implement another method taking the spread in M too.
         """
         k = kwargs.get('k', self.k)
         dists, indexes = self.fmodel.dataset.nn_y(y_desired, k = k)
