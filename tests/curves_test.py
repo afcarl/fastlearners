@@ -15,11 +15,11 @@ def test_curve_coverage():
 	"""Instanciate all forward models to being tested."""
 	# Robots
 	import robots
-	arm = robots.KinematicArm2D(dimM = 3)
+	arm = robots.KinematicArm2D(dim=3)
 
 	# Learners
-	fwdlearners = [learner.Learner.from_robot(vm, fwd = fwd, inv = 'NN') for fwd in learner.fwdclass.keys()]
-	curve = ErrorCurve(arm, fwdlearners, side = 'forward', trials = 30, tests = 2, uniformity = 'sensor')
+	fwdlearners = [learner.Learner.from_robot(vm, fwd=fwd, inv='NN') for fwd in learner.fwdclass.keys()]
+	curve = ErrorCurve(arm, fwdlearners, side='forward', trials=30, tests=2, uniformity='sensor')
 	curve.plot()
 
 	return True
@@ -30,17 +30,17 @@ def test_learner_params():
 
 	for i in range(10):
 		sigma = random.uniform(0.1, 1000.0)
-		l = learner.Learner((-2, -1), (0, 1), ((0, 1), (0, 1)), fwd = 'LWLR', sigma = sigma)
+		l = learner.Learner((-2, -1), (0, 1), ((0, 1), (0, 1)), fwd='LWLR', sigma=sigma)
 		check = check and l.imodel.fmodel.sigma == sigma
 
 	for i in range(10):
 		k = random.randint(1, 100)
-		l = learner.Learner((-2, -1), (0, 1), ((0, 1), (0, 1)), fwd = 'WNN', k = k)
+		l = learner.Learner((-2, -1), (0, 1), ((0, 1), (0, 1)), fwd ='WNN', k=k)
 		check = check and l.imodel.fmodel.k == k
 
 	return check
 
-tests = [test_learner_coverage,
+tests = [test_curve_coverage,
 		 test_learner_params]
 
 if __name__ == "__main__" and robotsimported:
