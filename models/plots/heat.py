@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-import toolbox
+from .. import tools
 
 def c_fun_exp(x):
     """Default function for competence"""
@@ -26,7 +26,7 @@ class HeatMap(object):
         """Initialize the heat map from two arrays
         @param xyc_array  3d points (x, y, c) with the c the value of each point.
         """
-        return cls(Dataset.from_xy([(x,y) for x,y,c in xyc_array], 
+        return cls(Dataset.from_xy([(x,y) for x,y,c in xyc_array],
                                    [(c,) for x,y,c in xyc_array],), **kwargs)
 
     @classmethod
@@ -70,23 +70,23 @@ class HeatMap(object):
         else:
             bounds0 = min((y[0] for y in self.dataset.iter_x())), max((y[0] for y in self.dataset.iter_x()))
             bounds1 = min((y[1] for y in self.dataset.iter_x())), max((y[1] for y in self.dataset.iter_x()))
-        
+
         for y, c in self.dataset.iter_xy():
-            center = (margin - 1 + (y[0]-bounds0[0])/(max(1.0, bounds0[1]-bounds0[0]))*res, 
+            center = (margin - 1 + (y[0]-bounds0[0])/(max(1.0, bounds0[1]-bounds0[0]))*res,
                       margin - 1 + (y[1]-bounds1[0])/(max(1.0, bounds1[1]-bounds1[0]))*res)
             neighborhood = []
             for i in range(-4, 5):
                 for j in range(-4, 5):
                     neighborhood.append((int(center[0])+i, int(center[1])+j))
             for ng in neighborhood:
-                d = toolbox.dist(ng, center)
+                d = tools.dist(ng, center)
                 w = math.exp(-d*d/4)
                 try:
                     heatmap[-ng[1]][ng[0]]   += w*c
                     weightmap[-ng[1]][ng[0]] += w
                 except IndexError:
                     pass
-        
+
         for i in range(res+2*margin):
             for j in range(res+2*margin):
                 w = weightmap[i][j]
@@ -94,8 +94,8 @@ class HeatMap(object):
                     heatmap[i][j] /= 1+w
                 if w == 0:
                     heatmap[i][j] = np.nan
-        
-        return heatmap, (bounds0, bounds1)    
+
+        return heatmap, (bounds0, bounds1)
 
     def plot(self, res = None):
         res = res or self.res
@@ -112,7 +112,7 @@ class HeatMap(object):
         im = plt.imshow(heatmap, interpolation = 'quadric', cmap = cmap,
                         extent = extent, aspect = 'auto')
         plt.colorbar(im)
-        #plt.limits = 
+        #plt.limits =
         #plt.axes().set_aspect('equal')
 
 

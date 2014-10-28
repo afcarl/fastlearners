@@ -168,6 +168,10 @@ cdef class cLWLRForwardModel:
             m.add_xy(x,y)
         return m
 
+    def __init__(self, *args, **kwargs):
+        pass
+
+
     def __cinit__(self, int dim_x, int dim_y, double sigma = 1.0, int k = -1, cDataset dset = None):
         if k == -1:
             k = 2*dim_x+1

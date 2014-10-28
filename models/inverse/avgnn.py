@@ -9,8 +9,8 @@ Notes : There should be no particular reason why the NN forward model's k
 import random
 import numpy as np
 
-import toolbox
-import models.forward.avgnn
+from .. import tools
+from ..forward import avgnn
 from . import inverse
 
 relax = 0.0 # no relaxation
@@ -28,7 +28,7 @@ class AverageNNInverseModel(inverse.InverseModel):
         inverse.InverseModel.__init__(self, dim_x, dim_y, **kwargs)
         self.dim_x = dim_x
         self.dim_y = dim_y
-        self.fmodel = models.forward.avgnn.AverageNNForwardModel(dim_x, dim_y, k = k, **kwargs)
+        self.fmodel = avgnn.AverageNNForwardModel(dim_x, dim_y, k = k, **kwargs)
         self.k      = k or 3*dim_y
 
     def infer_x(self, y, k = None):
@@ -64,7 +64,7 @@ class AverageNNInverseModel(inverse.InverseModel):
         for i in indexes:
             xi = self.fmodel.dataset.get_x(i)
             dists_xi, indexes_xi = self.fmodel.dataset.nn_x(xi, k = k)
-            std_xi = np.std([toolbox.dist(self.fmodel.dataset.get_y(j), y_desired) for j in indexes_xi])
+            std_xi = np.std([tools.dist(self.fmodel.dataset.get_y(j), y_desired) for j in indexes_xi])
             if std_xi < min_std:
                 min_std, min_xi = std_xi, xi
         return [min_xi]

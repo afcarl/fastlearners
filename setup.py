@@ -1,5 +1,5 @@
 import os
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name = "models",
@@ -15,6 +15,7 @@ setup(
                         'models.inverse',
                         'models.testbed',
                         'models.plots'],
+    install_requires=['numpy', 'scipy', 'pandas'],
     #long_description=read('README'),
     classifiers=[],
 )

@@ -6,7 +6,7 @@ import math
 import numpy as np
 import pandas
 
-import toolbox
+import tools
 
 import models.samples as samples
 import models.inverse.sciopt as iopt
@@ -44,12 +44,12 @@ if __name__ == "__main__":
         dist, index = dset.nn_y(goal, 1)
         sol_nn = dset.get_x(index[0])
         # Updating errors
-        error_lbfgsb     += toolbox.dist(goal, f(sol_lbfgsb))
-        error_lbfgsb_exh += min([toolbox.dist(goal, f(sol_lbfgsb_i)) for sol_lbfgsb_i in sol_lbfgsb_exh])
-        error_cmaes      += toolbox.dist(goal, f(sol_cmaes))
-        error_cmaes_exh  += min([toolbox.dist(goal, f(sol_cmaes_i)) for sol_cmaes_i in sol_cmaes_exh])
-        error_nn         += toolbox.dist(goal, f(sol_nn))
-        error_random     += toolbox.dist(goal, random.choice(dset_y))
+        error_lbfgsb     += tools.dist(goal, f(sol_lbfgsb))
+        error_lbfgsb_exh += min([tools.dist(goal, f(sol_lbfgsb_i)) for sol_lbfgsb_i in sol_lbfgsb_exh])
+        error_cmaes      += tools.dist(goal, f(sol_cmaes))
+        error_cmaes_exh  += min([tools.dist(goal, f(sol_cmaes_i)) for sol_cmaes_i in sol_cmaes_exh])
+        error_nn         += tools.dist(goal, f(sol_nn))
+        error_random     += tools.dist(goal, random.choice(dset_y))
 
     print "Done %i tests on a %i samples dataset of a 6 DOFs kinematic arm." % (ntests, nsamples)
     print "L-BFGS-B               : %2.2f" % (error_lbfgsb/ntests)

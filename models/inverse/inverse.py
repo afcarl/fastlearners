@@ -2,8 +2,7 @@
 import random
 import numpy as np
 
-import toolbox
-import models.forward
+from .. import tools
 
 relax = 0.0 # no relaxation
 
@@ -61,7 +60,7 @@ class InverseModel(object):
             xi = self.fmodel.dataset.get_x(i)
             yi = self.fmodel.dataset.get_y(i)
             dists_xi, indexes_xi = self.fmodel.dataset.nn_x(xi, k = k)
-            std_xi = np.std([toolbox.dist(self.fmodel.dataset.get_y(j), y_desired) for j in indexes_xi])
+            std_xi = np.std([tools.dist(self.fmodel.dataset.get_y(j), y_desired) for j in indexes_xi])
             if std_xi < min_std:
                 min_std, min_xi = std_xi, xi
             print(std_xi, tuple(yi))

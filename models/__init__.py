@@ -4,4 +4,4 @@ from . import forward
 from . import inverse
 from . import testbed
 
-from forward import enable_cmodels, disable_cmodels
+from .forward import enable_cmodels, disable_cmodels

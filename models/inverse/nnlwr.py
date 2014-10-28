@@ -1,11 +1,10 @@
 import random
 import numpy as np
 
-import toolbox
-import models.forward
+from .. import tools
+from .. import forward
 from . import inverse
 from . import sciopt
-from .. import forward
 
 relax = 0.0 # no relaxation
 
@@ -35,7 +34,7 @@ class NNLWRInverseModel(inverse.InverseModel):
         nn_x = [self.fmodel.dataset.get_x(index[0])]
 
         lwr_x = self.bfgsmodel.infer_x()
-        d_nnlwr = toolbox.dist(lwr_x-nn_x)
+        d_nnlwr = tools.dist(lwr_x-nn_x)
         if d_nnlwr <= self.pert:
             return lwr_x
         else:

@@ -10,8 +10,8 @@ import math
 import random
 import numpy as np
 
-import toolbox
-import models.forward
+from .. import tools
+from .. import forward
 from . import inverse
 
 relax = 0.0 # no relaxation
@@ -29,7 +29,7 @@ class WeightedNNInverseModel(inverse.InverseModel):
                       the one of the inverse model. Not ideal. #FIXME
         """
         self.k      = k or 3*dim_x
-        self.fmodel = models.forward.AverageNNForwardModel(dim_x, dim_y, sigma = sigma, k = self.k, **kwargs)
+        self.fmodel = forward.AverageNNForwardModel(dim_x, dim_y, sigma = sigma, k = self.k, **kwargs)
         self.sigma  = sigma
 
     def infer_x(self, y, sigma = None, k = None, **kwargs):
@@ -52,10 +52,10 @@ class WeightedNNInverseModel(inverse.InverseModel):
 
     def _weights(self, index, dists, sigma_sq, y_desired):
 
-        dists = [toolbox.dist(self.fmodel.dataset.get_y(idx), y_desired)
+        dists = [tools.dist(self.fmodel.dataset.get_y(idx), y_desired)
                  for idx in index] # could be optimized
 
-        w = np.fromiter((toolbox.gaussian_kernel(d/self.fmodel.dim_y, sigma_sq)
+        w = np.fromiter((tools.gaussian_kernel(d/self.fmodel.dim_y, sigma_sq)
                          for d in dists), np.float)
 
         # We eliminate the outliers # TODO : actually reduce w and index

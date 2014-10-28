@@ -123,8 +123,8 @@ def test_lwr_quadratic():
         #     x = np.random.rand(1)
         #     y = f(x)
         #     yp = model.predict_y(x)
-        #     # import toolbox
-        #     # print toolbox.dist(y, yp)
+        #     # import tools
+        #     # print tools.dist(y, yp)
         #     result = result and np.allclose(y, yp, rtol = 1e-1, atol = 1e-1)
 
     return result

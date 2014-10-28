@@ -3,7 +3,7 @@
 import random
 import numpy as np
 
-import toolbox
+from .. import tools
 from . import inverse
 
 from ..forward.lwr import LWLRForwardModel

@@ -9,7 +9,7 @@ import math
 import numpy as np
 #np.set_printoptions(precision=6, linewidth=300)
 
-import toolbox
+from .. import tools
 from ..dataset import Dataset
 from .forward import ForwardModel
 
@@ -42,7 +42,7 @@ class WeightedNNForwardModel(ForwardModel):
 
     def _weights(self, dists, sigma_sq):
 
-        w = np.fromiter((toolbox.gaussian_kernel(d/self.dim_x, sigma_sq)
+        w = np.fromiter((tools.gaussian_kernel(d/self.dim_x, sigma_sq)
                          for d in dists), np.float)
 
         # We eliminate the outliers # TODO : actually reduce w and index

@@ -1,10 +1,11 @@
+from __future__ import print_function
+
 import string
 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 cmap = cm.get_cmap('gist_rainbow')
 
-from toolbox import gfx
 from .. import testbed
 
 class ErrorCurve(object):
@@ -71,8 +72,7 @@ class ErrorCurve(object):
             k = int(self.test_period*(i+1)**self.test_pace)
             i += 1
         self._teststeps.append(self.trials-1)
-        print self._teststeps
-        #print self._teststeps
+        print(self._teststeps)
 
         #self._teststeps    = [int(i**self.test_pace) for i in range(1, int(self.trials**(1.0/self.test_pace)))]
         self._errors_avg   = [[] for tb in self.testbeds]
@@ -85,9 +85,9 @@ class ErrorCurve(object):
         else:
             errors = tb.run_inverse()
         done = (j+1) + k*len(self.testbeds)
-        gfx.print_progress(done, len(self._teststeps)*len(self.testbeds),
-                           prefix = "Running tests ", quiet = False,
-                           eta = 1, freq = 0.5)
+        # gfx.print_progress(done, len(self._teststeps)*len(self.testbeds),
+        #                    prefix = "Running tests ", quiet = False,
+        #                    eta = 1, freq = 0.5)
         return errors
 
     def _process_errors(self, tb, errors, j):
@@ -125,8 +125,8 @@ class ErrorCurve(object):
         cutoff = 0
         for i, tb in enumerate(self.testbeds):
             color = cmap(float(i)/len(self.testbeds))
-            print len(self._teststeps[cutoff:]), len(self._errors_avg[i][cutoff:])
-            print len(self._teststeps), len(self._errors_avg[i])
+            print(len(self._teststeps[cutoff:]), len(self._errors_avg[i][cutoff:]))
+            print(len(self._teststeps), len(self._errors_avg[i]))
             plt.plot(self._teststeps[cutoff:], self._errors_avg[i][cutoff:], color = color)
             plt.fill_between(self._teststeps, self._errors_lwstd[i], self._errors_upstd[i], facecolor=color, alpha=0.2)
 

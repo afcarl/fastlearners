@@ -2,7 +2,7 @@
 
 import numpy as np
 
-import toolbox
+import tools
 from . import testcase
 
 class Testbed(object):
@@ -71,7 +71,7 @@ class Testbed(object):
         errors = []
         for order, effect in self.testcases:
             predicted_effect = self.fmodel.predict_y(order)
-            errors.append(toolbox.dist(predicted_effect, effect))
+            errors.append(tools.dist(predicted_effect, effect))
         return errors
 
     def run_inverse(self):
@@ -83,7 +83,7 @@ class Testbed(object):
         for order, effect in self.testcases:
             predicted_order = self.imodel.infer_x(effect)[0]
             obtained_effect = self.robot.execute_order(predicted_order)
-            errors.append(toolbox.dist(obtained_effect, effect))
+            errors.append(tools.dist(obtained_effect, effect))
         return errors
 
     def avg_std(self, errors):

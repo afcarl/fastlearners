@@ -46,7 +46,7 @@ class Databag(object):
         :arg radius: the maximum radius (default: +inf)
         :return:     distance and indexes of found nearest neighbors.
         """
-        assert len(x) == self.dim
+        assert len(x) == self.dim, 'dimension of input {} does not match expected dimension {}.'.format(len(x), self.dim)
         k_x = min(k, self.size)
         # Because linear models requires x vector to be extended to [1.0]+x
         # to accomodate a constant, we store them that way.

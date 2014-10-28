@@ -54,7 +54,7 @@ import math
 import numpy as np
 #np.set_printoptions(precision=6, linewidth=300)
 
-import toolbox
+from .. import tools
 from ..dataset import Dataset
 from .forward import ForwardModel
 
@@ -116,7 +116,7 @@ class LWLRForwardModel(ForwardModel):
         X   = np.array([self.dataset.get_x_padded(i) for i in index])
         Y    = np.array([self.dataset.get_y(i) for i in index])
 
-        from toolbox import gfx
+        from tools import gfx
         samples = [(d_i, w_i, tuple(self.dataset.get_x(i)), tuple(self.dataset.get_y(i))) for d_i, i, w_i in zip(dists, index, w)]
         # for d_i, w_i, x_i, y_i in sorted(samples):
         #     print('{}{:7.5f}/{:7.5f}:  {} -> {}{}'.format(gfx.cyan, d_i, w_i, gfx.ppv(x_i, fmt=' 5.2f'), gfx.ppv(y_i, fmt=' 5.2f'), gfx.end))
