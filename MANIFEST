@@ -1,0 +1,16 @@
+setup.cfg
+setup.py
+versioneer.py
+
+fastlearners/__init__.py
+fastlearners/_version.py
+
+cpppyx/fastlearners.pyx
+cpppyx/fastlearners.cpp
+cpppyx/lwlr.h
+cpppyx/lwlr.cpp
+cpppyx/nnset.h
+cpppyx/nnset_brute.h
+cpppyx/nnset_brute.cpp
+cpppyx/predict.h
+cpppyx/predict.cpp

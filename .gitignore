@@ -1,4 +1,6 @@
+.fuse_hidden*
 *~
+
 .DS_Store
 *.py[cod]
 

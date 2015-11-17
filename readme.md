@@ -13,7 +13,7 @@ This software is placed under the [OpenScience license](http://fabien.benureau.c
 ### Installation
 
 1. Install [eigen3](http://eigen.tuxfamily.org/)
-1. `pip install fastlearners` (will install cython and numpy)
+1. `pip install numpy fastlearners`
 
 ### Usage
 
