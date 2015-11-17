@@ -1,6 +1,0 @@
-:mod:`models` -- Reference API
-==============================
-
-.. toctree::
-
-   learner.rst
