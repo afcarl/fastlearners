@@ -9,7 +9,7 @@ import numpy
 
 import versioneer
 
-VERSION='1.0'
+VERSION='1.0.0'
 
 def compile_args(packages):
 	return commands.getoutput('pkg-config {} --cflags'.format(' '.join(packages))).split()
