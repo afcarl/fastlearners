@@ -10,12 +10,18 @@ import versioneer
 VERSION='1.0.0'
 
 def compile_args(packages):
-	p = subprocess.Popen('pkg-config {} --cflags'.format(' '.join(packages)).split(), stdout=subprocess.PIPE)
-	return p.communicate()[0].decode('utf-8').split()
+	args = []
+	for pkg in packages:
+		p = subprocess.Popen('pkg-config {} --cflags'.format(pkg).split(), stdout=subprocess.PIPE)
+		args += p.communicate()[0].decode('utf-8').split()
+	return args
 
 def link_args(packages):
-	p = subprocess.Popen('pkg-config {} --libs'.format(' '.join(packages)).split(), stdout=subprocess.PIPE)
-	return p.communicate()[0].decode('utf-8').split()
+	args = []
+	for pkg in packages:
+		p = subprocess.Popen('pkg-config {} --libs'.format(pkg).split(), stdout=subprocess.PIPE)
+		args += p.communicate()[0].decode('utf-8').split()
+	return args
 
 cmdclass = versioneer.get_cmdclass()
 
