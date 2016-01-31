@@ -439,8 +439,9 @@ def run_command(commands, args, cwd=None, verbose=False, hide_stderr=False):
     for c in commands:
         try:
             dispcmd = str([c] + args)
-            # remember shell=False, so use git.cmd on windows, not just git
-            p = subprocess.Popen([c] + args, cwd=cwd, stdout=subprocess.PIPE,
+            # shell=True because with 3.4.4, does not always work with shell=False
+            p = subprocess.Popen(' '.join([c] + args), shell=True, cwd=cwd,
+                                 stdout=subprocess.PIPE,
                                  stderr=(subprocess.PIPE if hide_stderr
                                          else None))
             break
@@ -532,8 +533,9 @@ def run_command(commands, args, cwd=None, verbose=False, hide_stderr=False):
     for c in commands:
         try:
             dispcmd = str([c] + args)
-            # remember shell=False, so use git.cmd on windows, not just git
-            p = subprocess.Popen([c] + args, cwd=cwd, stdout=subprocess.PIPE,
+            # shell=True because with 3.4.4, does not always work with shell=False
+            p = subprocess.Popen(' '.join([c] + args), shell=True, cwd=cwd,
+                                 stdout=subprocess.PIPE,
                                  stderr=(subprocess.PIPE if hide_stderr
                                          else None))
             break
@@ -1500,32 +1502,32 @@ def get_cmdclass():
         del cmds["build_py"]
 
     # we override different "sdist" commands for both environments
-    # if "setuptools" in sys.modules:
-    #     from setuptools.command.sdist import sdist as _sdist
-    # else:
-    #     from distutils.command.sdist import sdist as _sdist
-    #
-    # class cmd_sdist(_sdist):
-    #     def run(self):
-    #         versions = get_versions()
-    #         self._versioneer_generated_versions = versions
-    #         # unless we update this, the command will keep using the old
-    #         # version
-    #         self.distribution.metadata.version = versions["version"]
-    #         return _sdist.run(self)
-    #
-    #     def make_release_tree(self, base_dir, files):
-    #         root = get_root()
-    #         cfg = get_config_from_root(root)
-    #         _sdist.make_release_tree(self, base_dir, files)
-    #         # now locate _version.py in the new base_dir directory
-    #         # (remembering that it may be a hardlink) and replace it with an
-    #         # updated value
-    #         target_versionfile = os.path.join(base_dir, cfg.versionfile_source)
-    #         print("UPDATING %s" % target_versionfile)
-    #         write_to_version_file(target_versionfile,
-    #                               self._versioneer_generated_versions)
-    # cmds["sdist"] = cmd_sdist
+    if "setuptools" in sys.modules:
+        from setuptools.command.sdist import sdist as _sdist
+    else:
+        from distutils.command.sdist import sdist as _sdist
+
+    class cmd_sdist(_sdist):
+        def run(self):
+            versions = get_versions()
+            self._versioneer_generated_versions = versions
+            # unless we update this, the command will keep using the old
+            # version
+            # self.distribution.metadata.version = versions["version"]
+            return _sdist.run(self)
+
+        def make_release_tree(self, base_dir, files):
+            root = get_root()
+            cfg = get_config_from_root(root)
+            _sdist.make_release_tree(self, base_dir, files)
+            # now locate _version.py in the new base_dir directory
+            # (remembering that it may be a hardlink) and replace it with an
+            # updated value
+            target_versionfile = os.path.join(base_dir, cfg.versionfile_source)
+            print("UPDATING %s" % target_versionfile)
+            write_to_version_file(target_versionfile,
+                                  self._versioneer_generated_versions)
+    cmds["sdist"] = cmd_sdist
 
     return cmds
 
